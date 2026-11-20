@@ -32,7 +32,7 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
-<link rel="stylesheet" href="style.css?v=8" />
+<link rel="stylesheet" href="style.css?v=9" />
 
 <!-- 방문자 수·탭 이용 통계 (Google Analytics 4) — 꿈 내용·생일·이름 같은 개인 식별 정보는 보내지 않습니다 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VJMJJFG2NT"></script>
@@ -55,9 +55,16 @@
         <h1>몽픽</h1>
       </div>
     </div>
-    <div class="round-chip" id="round-chip" title="이번 주 추첨">
-      <span class="round-num">1251회</span>
-      <span class="round-date">11/21 토</span>
+    <div class="top-actions">
+      <button type="button" class="qr-open" id="qr-open" aria-haspopup="dialog" aria-controls="qr-modal"
+        title="로또 용지 QR로 당첨 확인">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 8.5V6a2 2 0 0 1 2-2h2.5M15.5 4H18a2 2 0 0 1 2 2v2.5M20 15.5V18a2 2 0 0 1-2 2h-2.5M8.5 20H6a2 2 0 0 1-2-2v-2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="8" y="8" width="3.2" height="3.2" rx=".7" fill="currentColor"/><rect x="12.8" y="8" width="3.2" height="3.2" rx=".7" fill="currentColor"/><rect x="8" y="12.8" width="3.2" height="3.2" rx=".7" fill="currentColor"/><path d="M12.9 12.9h3.1v3.1h-3.1z" fill="currentColor"/></svg>
+        <span>QR</span>
+      </button>
+      <div class="round-chip" id="round-chip" title="이번 주 추첨">
+        <span class="round-num">1251회</span>
+        <span class="round-date">11/21 토</span>
+      </div>
     </div>
   </header>
 
@@ -335,6 +342,54 @@
   </nav>
 
 </div>
-<script src="app.js?v=8"></script>
+
+<!-- ───────────────────────── 실물 용지 QR 스캔 시트 ───────────────────────── -->
+<div class="qr-modal" id="qr-modal" hidden>
+  <div class="qr-backdrop" data-qr-close aria-hidden="true"></div>
+  <section class="qr-sheet" role="dialog" aria-modal="true" aria-labelledby="qr-title">
+    <div class="qr-grab" aria-hidden="true"></div>
+    <header class="qr-head">
+      <h2 id="qr-title">로또 용지 QR 확인</h2>
+      <button type="button" class="qr-close" id="qr-close" aria-label="닫기">✕</button>
+    </header>
+    <div class="qr-body">
+      <p class="qr-sub">용지 오른쪽 위 QR을 비추면 이번 주 당첨을 바로 채점해 드려요.</p>
+
+      <div class="qr-view" id="qr-view" hidden>
+        <video id="qr-video" playsinline muted autoplay aria-label="로또 용지 QR 스캔 카메라"></video>
+        <div class="qr-frame" aria-hidden="true"><i></i></div>
+        <p class="qr-view-note">QR을 사각형 안에 맞춰 주세요</p>
+      </div>
+
+      <div class="qr-actions">
+        <button type="button" class="qr-act is-primary" id="qr-cam">
+          <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M4 8.5V6a2 2 0 0 1 2-2h2.5M15.5 4H18a2 2 0 0 1 2 2v2.5M20 15.5V18a2 2 0 0 1-2 2h-2.5M8.5 20H6a2 2 0 0 1-2-2v-2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="3.1" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span>카메라로 스캔</span>
+        </button>
+        <button type="button" class="qr-act" id="qr-photo">
+          <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="1.7" fill="currentColor"/><path d="M5.5 17l4.2-4.2 3 3 2.3-2.3 3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>사진에서 읽기</span>
+        </button>
+      </div>
+      <input type="file" id="qr-file" accept="image/*" hidden />
+
+      <details class="qr-paste" id="qr-paste">
+        <summary>QR 링크 직접 붙여넣기</summary>
+        <div class="qr-paste-body">
+          <input type="text" id="qr-text" autocomplete="off" spellcheck="false"
+            placeholder="https://m.dhlottery.co.kr/?v=… 또는 1250m0105…" aria-label="로또 QR 링크 또는 코드" />
+          <button type="button" class="ghost-btn" id="qr-text-run">확인</button>
+        </div>
+      </details>
+
+      <p class="qr-status" id="qr-status" aria-live="polite" hidden></p>
+      <div class="qr-result" id="qr-result" aria-live="polite"></div>
+      <p class="qr-foot">QR은 이 기기 안에서만 읽고, 읽은 번호는 서버로 보내지 않아요.</p>
+    </div>
+  </section>
+</div>
+
+<script src="vendor/jsQR.min.js"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>
