@@ -3011,7 +3011,12 @@
         · 한 주(일→토) 동안 요일별로 누적되고, 토요일 추첨 뒤 일요일에 새 회차로 넘어간다
         · 위쪽 요일 칩으로 `전체` 또는 그 요일 사례만 골라 본다
      ========================================================= */
-  const FEED = { cases: [], updated: '', round: 0, week: [], day: '' };  /* day: '' = 아직 안 골랐다 → 최신 요일이 기본 */
+  const FEED = {
+    cases: [], archive: [], updated: '', round: 0, week: [], day: '',
+    viewRound: 0,      /* 사용자가 고른 회차 — 0이면 이번 회차(사례가 없으면 최근 회차) */
+    winnersOnly: false,/* 당첨된 꿈만 보기 */
+    loaded: false      /* dreams.json을 실제로 받았는지 */
+  };  /* day: '' = 아직 안 골랐다 → 최신 요일이 기본 */
   const DAY_ORDER = ['일', '월', '화', '수', '목', '금', '토'];
   /* 카드마다 붙는 출처 한 줄 — 이 문구 하나만 확정 표기, 다른 외부 이름은 쓰지 않는다 */
   const FEED_SOURCE = '출처: 국내 꿈해몽 커뮤니티 실제 사연 재구성';
@@ -3057,6 +3062,74 @@
     return md && day ? md + '(' + day + ')' : (c.dayLabel || day || '');
   }
 
+  /* ---------- 지난 회차 아카이브 ----------
+     dreams-archive.json: { rounds: [{ round, weekStart, weekEnd, items: [...] }] }
+     · 회차가 바뀔 때 dreams.json의 지난 회차 사례가 그대로 이관되므로, 파일에 있으면 바로 읽어 채점한다
+     · 없는 과거 회차는 만들지 않는다(처음엔 빈 rounds: []). 당첨번호가 없으면 '추첨 전'으로 둔다 */
+  function feedArchiveRounds(j) {
+    const list = (j && Array.isArray(j.rounds)) ? j.rounds : [];
+    return list.map((r) => {
+      const raw = Array.isArray(r && r.items) ? r.items : ((r && r.cases) || []);
+      return {
+        round: Number(r && r.round) || 0,
+        weekStart: String((r && r.weekStart) || ''),
+        weekEnd: String((r && r.weekEnd) || ''),
+        items: raw.filter(feedCaseOk)
+      };
+    }).filter((r) => r.round > 0 && r.items.length).sort((a, b) => b.round - a.round);
+  }
+  function feedArchiveOf(round) {
+    const key = Number(round) || 0;
+    return FEED.archive.filter((r) => r.round === key)[0] || null;
+  }
+  /* 그 회차의 사례 — 이번 회차는 dreams.json, 지난 회차는 아카이브를 먼저 본다 */
+  function feedCasesOf(round) {
+    const key = Number(round) || 0;
+    const own = FEED.cases.filter((c) => feedCaseRound(c) === key);
+    const ar = feedArchiveOf(key);
+    if (key === (Number(META.next_round) || 0) && own.length) return own;
+    if (ar && ar.items.length) return ar.items.slice();
+    return own;
+  }
+  /* 회차 칩에 올릴 회차 — 이번 회차 + dreams.json 회차 + 아카이브 회차(최신순) */
+  function feedRoundOptions() {
+    const out = [];
+    const add = (r) => {
+      const n = Number(r) || 0;
+      if (n > 0 && out.indexOf(n) < 0) out.push(n);
+    };
+    add(META.next_round);
+    FEED.cases.forEach((c) => add(feedCaseRound(c)));
+    FEED.archive.forEach((r) => add(r.round));
+    return out.sort((a, b) => b - a);
+  }
+  /* 그 회차 당첨번호 — lotto-results.json에 있으면 6개+보너스, 없으면 null(추첨 전) */
+  function feedDrawOf(round) {
+    const d = DRAWS.map[String(Number(round))] || null;
+    return (d && d.numbers && d.numbers.length === 6) ? d : null;
+  }
+  /* 회차 채점 요약 — 당첨번호가 없으면 null */
+  function feedRoundScore(round, week) {
+    const draw = feedDrawOf(round);
+    if (!draw) return null;
+    const scored = (week || []).map((c) => scoreCombo(c.nums, draw));
+    const wins = scored.filter((s) => s.rank);
+    return {
+      draw: draw,
+      total: scored.length,
+      wins: wins.length,
+      best: wins.length ? Math.min.apply(null, wins.map((s) => s.rank)) : 0
+    };
+  }
+  /* 채점 한 건의 말 — `5등 당첨 (3개 일치)` / `2등 당첨 (5개 일치 + 보너스)` */
+  function feedScoreWord(s) {
+    if (!s) return '';
+    /* 보너스는 5개를 맞혔을 때만 등수에 영향을 줘서 그때만 붙인다 */
+    const bonus = (s.bonus && s.hits.length === 5) ? ' + 보너스' : '';
+    const hit = s.hits.length + '개 일치' + bonus;
+    return s.rank ? s.rank + '등 당첨 (' + hit + ')' : '미당첨 (' + hit + ')';
+  }
+
   /* 탭에 들어올 때 기본으로 보여 줄 요일 — 이번 회차에서 가장 최근 사례가 있는 요일 */
   function defaultFeedDay(week) {
     let latest = '';
@@ -3064,37 +3137,43 @@
     return (latest && dayOfDate(latest)) || 'all';
   }
 
+  /* dreams.json(이번 회차)과 dreams-archive.json(지난 회차)을 함께 읽고,
+     lotto-results.json 당첨번호까지 받아 둔 뒤 그린다 — 없으면 '추첨 전' 상태로 */
   async function loadFeed() {
     const box = $('#dream-feed');
     if (!box) return;
-    try {
-      const res = await fetch('dreams.json');
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      FEED.cases = ((data && data.cases) || []).filter(feedCaseOk);
-      FEED.updated = (data && data.updated) || '';
-    } catch (e) {
-      FEED.cases = [];
-    }
+    const readJson = (url) => fetch(url)
+      .then((r) => (r.ok ? r.json() : null))
+      .catch(() => null);
+    const [dreams, archive] = await Promise.all([readJson('dreams.json'), readJson('dreams-archive.json')]);
+    FEED.cases = ((dreams && dreams.cases) || []).filter(feedCaseOk);
+    FEED.updated = (dreams && dreams.updated) || '';
+    FEED.archive = feedArchiveRounds(archive);
+    FEED.loaded = !!(dreams || archive);
     FEED.day = '';
+    FEED.viewRound = 0;
+    FEED.winnersOnly = false;
+    try { await resultsFile(); } catch (e) { /* 오프라인 — 저장해 둔 결과로 */ }
     renderFeed();
   }
 
-  /* 지금 보여 줄 회차 — 이번 회차 사례가 있으면 그 회차,
-     일요일 리셋 직후처럼 아직 없으면 파일에 있는 가장 최근 회차(지난 회차)를 보여 준다 */
+  /* 지금 보여 줄 회차 — 고른 회차가 있으면 그 회차,
+     없으면 이번 회차(사례가 있을 때), 일요일 리셋 직후처럼 아직 없으면 가장 최근 회차 */
   function feedRound() {
     const cur = Number(META.next_round) || 0;
-    const rounds = FEED.cases.map(feedCaseRound).filter((r) => r > 0);
-    if (rounds.indexOf(cur) >= 0) return cur;
-    return rounds.length ? Math.max.apply(null, rounds) : cur;
+    const opts = feedRoundOptions();
+    const has = (r) => feedCasesOf(r).length > 0;
+    if (FEED.viewRound && (opts.indexOf(FEED.viewRound) >= 0 || has(FEED.viewRound))) return FEED.viewRound;
+    if (cur && has(cur)) return cur;
+    const past = opts.filter(has);
+    return past.length ? past[0] : cur;
   }
 
-  /* 이번 회차(한 주) 사례를 최신 날짜부터 — 같은 날은 파일 순서 그대로 */
+  /* 그 회차(한 주) 사례를 최신 날짜부터 — 같은 날은 파일 순서 그대로 */
   function feedWeekList() {
     FEED.round = feedRound();
-    FEED.week = FEED.cases
+    FEED.week = feedCasesOf(FEED.round)
       .map((c, i) => ({ c: c, i: i }))
-      .filter((x) => feedCaseRound(x.c) === FEED.round)
       .sort((a, b) => String(b.c.date || '').localeCompare(String(a.c.date || '')) || a.i - b.i)
       .map((x) => x.c);
     return FEED.week;
@@ -3141,20 +3220,90 @@
       + mdOfDate(end) + '(' + dayOfDate(end) + ') 모은 사례 ' + week.length + '건';
   }
 
+  /* 회차 칩 + 채점 요약 배너 — 이번 회차는 추첨 전/채점 완료, 지난 회차는 당첨번호까지 */
+  function renderRoundBox(round, week) {
+    const pick = $('#round-pick');
+    const msg = $('#round-msg');
+    if (!pick || !msg) return;
+    const cur = Number(META.next_round) || 0;
+    const opts = feedRoundOptions();
+    pick.innerHTML = opts.map((r) => {
+      const on = r === round;
+      return `<button type="button" class="roundchip${on ? ' is-on' : ''}" data-round="${r}"
+        aria-pressed="${on}">${r === cur ? '이번 주 · ' : ''}${r}회</button>`;
+    }).join('');
+
+    const score = feedRoundScore(round, week);
+    const past = round !== cur;
+    let line = '';
+    if (!score) line = past ? round + '회 · 당첨번호가 아직 없어 채점 전이에요'
+      : round + '회 · 토요일 20:45 추첨 후 자동 채점';
+    else if (score.wins) line = round + '회 채점 완료 · 총 ' + score.total + '개 꿈 중 '
+      + score.wins + '건 당첨 (최고 ' + score.best + '등)';
+    else line = round + '회 채점 완료 · 총 ' + score.total + '개 꿈 중 당첨 0건';
+    msg.textContent = line;
+    msg.classList.toggle('is-scored', !!score);
+    msg.classList.toggle('is-win', !!(score && score.wins));
+
+    const drawBox = $('#round-draw');
+    if (drawBox) {
+      drawBox.innerHTML = score
+        ? '<span class="round-draw-label">당첨번호</span>'
+          + score.draw.numbers.map((n) => numballHTML(n)).join('')
+          + (score.draw.bonus >= 1
+            ? '<span class="round-draw-bonus">보너스</span>' + numballHTML(score.draw.bonus, 'is-bonus')
+            : '')
+        : '';
+      drawBox.hidden = !score;
+    }
+
+    const winBtn = $('#winners-only');
+    if (winBtn) {
+      const can = !!(score && score.wins);
+      if (!can) FEED.winnersOnly = false;
+      const on = can && FEED.winnersOnly;
+      winBtn.hidden = !can;
+      winBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      winBtn.classList.toggle('is-on', on);
+      winBtn.textContent = can ? '🏆 당첨된 꿈만 보기 (' + score.wins + ')' : '🏆 당첨된 꿈만 보기';
+    }
+
+    const note = $('#archive-note');
+    if (note) {
+      const show = !FEED.archive.length;
+      note.hidden = !show;
+      note.textContent = show ? '첫 아카이브는 ' + cur + '회 추첨 후(일요일 10시)부터 쌓여요.' : '';
+    }
+  }
+
   function feedTicketText(c) {
     return `${c.theme} · ${c.title}`;
   }
-  /* 이미 담아 둔 사례인지 — 번호함의 같은 회차 · 같은 문구로 찾는다 */
+  /* 이미 담아 둔 사례인지 — 번호함의 이번 회차 · 같은 문구로 찾는다 */
   function feedSaved(c) {
     const want = feedTicketText(c);
     return loadTickets().some((t) => String(t.round) === String(META.next_round) && String(t.text) === want);
   }
 
   function feedCardHTML(c) {
+    const round = feedCaseRound(c);
+    const draw = feedDrawOf(round);
+    const scored = draw ? scoreCombo(c.nums, draw) : null;
+    const isNow = round === (Number(META.next_round) || 0);
+    /* 당첨번호와 맞은 공은 하이라이트, 보너스만 맞은 공은 금색 링 */
+    const hitCls = (n) => {
+      if (!draw) return '';
+      if (draw.numbers.indexOf(n) >= 0) return 'is-hit';
+      if (n === draw.bonus) return 'is-bonus';
+      return '';
+    };
     const teaser = String(c.story[0] || '').replace(/\s+/g, ' ');
-    const peek = c.nums.map((n) => numballHTML(n)).join('');
+    const peek = c.nums.map((n) => numballHTML(n, hitCls(n))).join('');
     const lines = c.story.map((line) => `<p class="dc-line">${esc(line)}</p>`).join('');
-    const balls = c.nums.map((n) => `<span class="ball ${ballClass(n)}" style="animation-delay:${c.nums.indexOf(n) * 45}ms">${n}</span>`).join('');
+    const balls = c.nums.map((n) => {
+      const cls = hitCls(n);
+      return `<span class="ball ${ballClass(n)}${cls ? ' ' + cls : ''}" style="animation-delay:${c.nums.indexOf(n) * 45}ms">${n}</span>`;
+    }).join('');
     const why = (c.why || []).filter(Boolean).map((line) => `<p class="dc-why-line">${esc(line)}</p>`).join('');
     const ballWhy = (c.ballWhy || []).filter((b) => b && b.n && b.text);
     const ballFold = ballWhy.length
@@ -3162,12 +3311,23 @@
           ballWhy.map((b) => `<p class="dc-ballline"><b>${b.n}</b> ${esc(b.text)}</p>`).join('')
         }</div></details>`
       : '';
-    const saved = feedSaved(c);
+    const saved = isNow && feedSaved(c);
     const dayTxt = feedDayText(c);
     const when = c.dayLabel || (feedCaseDay(c) ? feedCaseDay(c) + '요일' : '');
-    return `<details class="dc" data-id="${esc(c.id)}" data-day="${esc(feedCaseDay(c))}" data-date="${esc(c.date || '')}">
+    const badge = scored
+      ? `<span class="dc-score${scored.rank ? ' is-win' : ''}">${scored.rank ? '🏆 ' + feedScoreWord(scored) : '아쉽지만 ' + feedScoreWord(scored)}</span>`
+      : '';
+    const actions = isNow
+      ? `<div class="dc-actions">
+          <button type="button" class="primary-btn js-dream-add${saved ? ' is-saved' : ''}" data-id="${esc(c.id)}"
+            data-saved="${saved ? '1' : '0'}">${saved ? '번호함에 담김' : '이 번호 담기'}</button>
+        </div>
+        <p class="dc-note">${META.next_round}회 번호함에 담기고, 추첨 뒤에 <b>안내</b> 탭에서 자동으로 채점돼요.</p>`
+      : `<p class="dc-note">${round}회에 올라온 지난 사례예요. 추첨이 끝나 새 번호함에는 담기지 않아요.</p>`;
+    return `<details class="dc${scored && scored.rank ? ' is-win' : ''}" data-id="${esc(c.id)}" data-round="${round}"
+      data-day="${esc(feedCaseDay(c))}" data-date="${esc(c.date || '')}" data-win="${scored && scored.rank ? '1' : '0'}">
       <summary class="dc-sum">
-        <span class="dc-kicker">오늘의 꿈 사례 · #${esc(c.theme)}${dayTxt ? ' · ' + esc(dayTxt) : ''}</span>
+        <span class="dc-topline"><span class="dc-kicker">오늘의 꿈 사례 · #${esc(c.theme)}${dayTxt ? ' · ' + esc(dayTxt) : ''}</span>${badge}</span>
         <span class="dc-title">${esc(c.title)}</span>
         <span class="dc-teaser">${esc(teaser)}</span>
         <span class="dc-peek">${peek}</span>
@@ -3180,11 +3340,7 @@
         <div class="dc-nums">${balls}</div>
         ${why ? `<div class="dc-why"><p class="dc-why-head">왜 이 번호예요?</p>${why}${ballFold}</div>` : ''}
         ${c.tip ? `<p class="dc-tip">${esc(c.tip)}</p>` : ''}
-        <div class="dc-actions">
-          <button type="button" class="primary-btn js-dream-add${saved ? ' is-saved' : ''}" data-id="${esc(c.id)}"
-            data-saved="${saved ? '1' : '0'}">${saved ? '번호함에 담김' : '이 번호 담기'}</button>
-        </div>
-        <p class="dc-note">${META.next_round}회 번호함에 담기고, 추첨 뒤에 <b>안내</b> 탭에서 자동으로 채점돼요.</p>
+        ${actions}
       </div>
     </details>`;
   }
@@ -3193,18 +3349,56 @@
     const box = $('#dream-feed');
     if (!box) return;
     const week = feedWeekList();
+    const score = feedRoundScore(FEED.round, week);
+    if (!score) FEED.winnersOnly = false;
     const byDay = {};
     week.forEach((c) => { const d = feedCaseDay(c); byDay[d] = (byDay[d] || 0) + 1; });
-    if (!FEED.day) FEED.day = defaultFeedDay(week);
+    if (!FEED.day) FEED.day = FEED.winnersOnly ? 'all' : defaultFeedDay(week);
     if (FEED.day !== 'all' && !byDay[FEED.day]) FEED.day = 'all';
+    renderRoundBox(FEED.round, week);
     renderDayBar(week);
     renderWeekLine(week);
     if (!week.length) {
-      box.innerHTML = '<p class="feed-empty">오늘의 사례를 불러오지 못했어요. 잠시 뒤에 다시 열어 주세요.</p>';
+      const cur = Number(META.next_round) || 0;
+      const msg = FEED.loaded
+        ? (FEED.round === cur
+            ? '이번 회차 사례는 매일 오전 10시에 요일별로 하나씩 올라와요.'
+            : FEED.round + '회 사례가 없어요.')
+        : '오늘의 사례를 불러오지 못했어요. 잠시 뒤에 다시 열어 주세요.';
+      box.innerHTML = '<p class="feed-empty">' + esc(msg) + '</p>';
       return;
     }
-    const list = FEED.day === 'all' ? week : week.filter((c) => feedCaseDay(c) === FEED.day);
+    let list = FEED.day === 'all' ? week : week.filter((c) => feedCaseDay(c) === FEED.day);
+    if (FEED.winnersOnly && score) list = list.filter((c) => scoreCombo(c.nums, score.draw).rank);
+    if (!list.length) {
+      const empty = FEED.winnersOnly
+        ? (FEED.day === 'all' ? '이 회차엔 당첨된 꿈이 없어요. 채점 결과는 위에서 볼 수 있어요.'
+          : '이 요일엔 당첨된 꿈이 없어요. ‘전체’에서 다시 봐 주세요.')
+        : '이 요일엔 아직 사례가 없어요.';
+      box.innerHTML = '<p class="feed-empty">' + empty + '</p>';
+      return;
+    }
     box.innerHTML = list.map(feedCardHTML).join('');
+  }
+
+  /* 회차 고르기 — 고른 회차의 사례·채점 결과를 바로 그린다 */
+  function pickFeedRound(round) {
+    const r = Number(round) || 0;
+    if (!r || FEED.viewRound === r) return false;
+    FEED.viewRound = r;
+    FEED.day = '';
+    FEED.winnersOnly = false;
+    renderFeed();
+    return true;
+  }
+
+  /* 당첨된 꿈만 보기 — 당첨번호가 있는 회차에서만 켜고, 끄는 것은 언제나 된다 */
+  function setFeedWinners(on) {
+    if (on && !feedRoundScore(FEED.round, feedCasesOf(FEED.round))) return false;
+    FEED.winnersOnly = !!on;
+    if (FEED.winnersOnly) FEED.day = 'all';   /* 요일 필터에 가려 당첨 꿈을 놓치지 않게 */
+    renderFeed();
+    return FEED.winnersOnly;
   }
 
   /* 요일 칩 — 사례가 있는 요일만 골라 보고, 빈 요일은 안내만 */
@@ -3220,9 +3414,9 @@
     return true;
   }
 
-  /* 담기 — 번호함에 이번 회차로 저장하고 토스트 */
+  /* 담기 — 번호함에 이번 회차로 저장하고 토스트 (지난 회차 사례는 담지 않는다) */
   function addFeedTicket(id) {
-    const c = FEED.cases.filter((x) => x.id === id)[0];
+    const c = feedCasesOf(META.next_round).filter((x) => x.id === id)[0] || null;
     if (!c) return null;
     const entry = rememberTicket({
       mode: 'example',
@@ -3250,7 +3444,7 @@
     /* 오늘의 꿈에 들어오면 늘 최신 요일 사례부터 — `전체`는 눌러서 본다 */
     if (name === 'today') {
       FEED.day = '';
-      if (FEED.cases.length) renderFeed(); else loadFeed();
+      if (FEED.loaded) renderFeed(); else loadFeed();
     }
     if (name === 'reason') renderReasonPage();
     if (name === 'trust') { renderTickets(); refreshTickets(); }
@@ -3362,6 +3556,18 @@
     if (dayBar) dayBar.addEventListener('click', (e) => {
       const chip = e.target.closest('.daychip');
       if (chip) pickFeedDay(chip.dataset.day);
+    });
+
+    /* 오늘의 꿈 사례 — 회차 칩 · 당첨된 꿈만 보기 */
+    const roundPick = $('#round-pick');
+    if (roundPick) roundPick.addEventListener('click', (e) => {
+      const chip = e.target.closest('.roundchip');
+      if (chip) pickFeedRound(chip.dataset.round);
+    });
+    const winOnly = $('#winners-only');
+    if (winOnly) winOnly.addEventListener('click', () => {
+      const on = setFeedWinners(!FEED.winnersOnly);
+      toast(on ? '당첨된 꿈만 모아 봐요' : '전체 꿈을 봐요');
     });
 
     /* 오늘의 꿈 사례 — 카드 안 `이 번호 담기` */
@@ -3479,7 +3685,9 @@
     renderReasonPage, renderReasonCta, renderReasonSummary, renderReasonStep1, renderReasonStep2,
     renderReasonStep3, renderReasonStep4, briefSources, paperInner, calcInner, elemBarsHTML,
     feed: { data: FEED, load: loadFeed, render: renderFeed, add: addFeedTicket, saved: feedSaved,
-      day: pickFeedDay, round: feedRound, week: feedWeekList, text: feedTicketText }
+      day: pickFeedDay, round: feedRound, week: feedWeekList, text: feedTicketText,
+      rounds: feedRoundOptions, casesOf: feedCasesOf, pickRound: pickFeedRound,
+      draw: feedDrawOf, score: feedRoundScore, winners: setFeedWinners, word: feedScoreWord }
   };
 
   document.addEventListener('DOMContentLoaded', init);

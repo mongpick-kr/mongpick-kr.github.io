@@ -32,7 +32,7 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
-<link rel="stylesheet" href="style.css?v=7" />
+<link rel="stylesheet" href="style.css?v=8" />
 
 <!-- 방문자 수·탭 이용 통계 (Google Analytics 4) — 꿈 내용·생일·이름 같은 개인 식별 정보는 보내지 않습니다 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VJMJJFG2NT"></script>
@@ -133,6 +133,18 @@
         <h2 class="hero-title">오늘의 꿈 사례</h2>
         <p class="hero-sub">꿈을 안 꾼 날엔, 다른 사람 꿈에서 번호를 담아 가세요.</p>
       </div>
+
+      <!-- 회차 전환 · 채점 요약 — 이번 회차와 지난 회차를 오가며 당첨 결과를 확인한다 -->
+      <section class="roundbox" id="round-box" aria-label="회차 선택과 당첨 결과">
+        <div class="roundbox-chips" id="round-pick" role="group" aria-label="회차 선택"></div>
+        <p class="roundbox-msg" id="round-msg" aria-live="polite"></p>
+        <div class="roundbox-draw" id="round-draw" hidden></div>
+        <div class="roundbox-foot">
+          <button type="button" class="round-filter" id="winners-only" aria-pressed="false" hidden>🏆 당첨된 꿈만 보기</button>
+          <p class="roundbox-note" id="archive-note" hidden></p>
+        </div>
+      </section>
+
       <div class="daybar" id="day-bar" role="group" aria-label="요일별로 꿈 사례 보기"></div>
       <p class="feed-week" id="feed-week"></p>
       <div id="dream-feed" class="feed">
@@ -323,6 +335,6 @@
   </nav>
 
 </div>
-<script src="app.js?v=7"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>

@@ -1,0 +1,6 @@
+{
+  "v": 1,
+  "updated": "2026-11-21",
+  "note": "지난 회차 오늘의 꿈 사례 보관 — 회차가 바뀔 때 dreams.json의 지난 회차 사례가 round·weekStart·weekEnd·items 그대로 이관된다. 없는 과거 회차는 만들지 않으며, 당첨 등수는 lotto-results.json의 해당 회차 당첨번호와 대조해 화면에서 자동 채점한다.",
+  "rounds": []
+}
