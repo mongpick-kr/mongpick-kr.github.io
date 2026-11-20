@@ -16,7 +16,7 @@ HEADERS = {
     "Accept": "application/json",
 }
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "lotto-results.json")
-KEEP = 30
+KEEP = 200   # 최근 200회차 보관 — 지난 회차 아카이브(dreams-archive.json)의 꿈도 오래 채점되도록
 
 
 def fetch(round_no):

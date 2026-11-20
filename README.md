@@ -96,7 +96,7 @@
 | `app.js` | 7×7 압축 엔진 · 만세력 계산 · 꿈×사주 판정 · 화면 렌더링 |
 | `dream_data.json` | 꿈 상징 11,705 색인 + 실전 사례 155 + 원리 표 + `saju`(22글자 물상·15칸 판정) (약 309KB) |
 | `test_app.py` | Playwright 390×844 동작 검증 + 스크린샷 (4차 판) |
-| `lotto-results.json` | 최근 회차 당첨번호 5개 이상 (`draws` · `latest` · `updated`) — 자동 채점의 기본 자료 |
+| `lotto-results.json` | 최근 회차 당첨번호 200개 (`draws` · `latest` · `updated`) — 번호함·꿈 사례 자동 채점의 기본 자료 |
 | `api/lotto.js` | 회차 실시간 조회 서버 함수(Vercel). 정적 호스팅에서는 쓰지 않음 |
 | `.github/workflows/update-lotto.yml` | 매주 토요일 20:45 KST·수동 실행으로 `lotto-results.json` 자동 갱신 |
 | `scripts/update-lotto.py` | 위 워크플로가 부르는 갱신 스크립트 |
