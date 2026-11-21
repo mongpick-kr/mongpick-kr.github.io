@@ -3696,38 +3696,137 @@
       return hit && hit.data ? hit.data : '';
     } catch (e) { return ''; }
   }
+  /* 앱 안 브라우저(카카오톡·인스타그램·페이스북·스레드 등)는 카메라를 막는 경우가 많다 */
+  function qrInAppBrowser() {
+    const ua = navigator.userAgent || '';
+    return /KAKAOTALK|NAVER\(|Instagram|FBAN|FBAV|FBIOS|Barcelona|Line\/|DaumApps|everytimeApp/i.test(ua);
+  }
+  function qrCamHelpTail() {
+    return qrInAppBrowser()
+      ? ' 지금은 앱 안 브라우저예요 — 오른쪽 위 ⋯ 메뉴에서 "다른 브라우저로 열기"를 눌러 크롬·사파리에서 다시 시도해 주세요.'
+      : '';
+  }
+  /* 카메라 제약은 기기마다 달라서, 실패하면 점점 느슨하게 다시 시도한다
+     (정사각 1280 제약·facingMode 에서 OverconstrainedError / NotReadableError 가 나는 안드로이드가 있다) */
+  const QR_CAM_TRIES = [
+    { video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 1280 } }, audio: false },
+    { video: { facingMode: { ideal: 'environment' } }, audio: false },
+    { video: { facingMode: 'environment' }, audio: false },
+    { video: true, audio: false }
+  ];
+  function qrFatalCameraError(e) {
+    const name = e && e.name;
+    return name === 'NotAllowedError' || name === 'PermissionDeniedError' || name === 'SecurityError';
+  }
+  async function qrGetStream() {
+    let last = null;
+    for (let i = 0; i < QR_CAM_TRIES.length; i++) {
+      try { return await navigator.mediaDevices.getUserMedia(QR_CAM_TRIES[i]); }
+      catch (e) {
+        last = e;
+        if (qrFatalCameraError(e)) throw e;
+      }
+    }
+    throw last || new Error('camera');
+  }
+  /* 영상 메타데이터가 올 때까지 조금 기다린다 — 바로 play() 하면 검은 화면으로 남는 기기가 있다 */
+  function qrWaitVideo(video, ms) {
+    return new Promise((res) => {
+      if (!video) { res(false); return; }
+      const ready = () => !!(video.videoWidth && video.readyState >= 1);
+      if (ready()) { res(true); return; }
+      let done = false;
+      const evs = ['loadedmetadata', 'loadeddata', 'canplay', 'playing'];
+      const fin = (ok) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        evs.forEach((ev) => video.removeEventListener(ev, onEv));
+        res(ok);
+      };
+      const onEv = () => { if (ready()) fin(true); };
+      evs.forEach((ev) => video.addEventListener(ev, onEv));
+      const timer = setTimeout(() => fin(ready()), ms);
+    });
+  }
   async function qrStartCamera() {
     if (QR.scanning) return;
-    if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
-      qrSetStatus('이 브라우저는 카메라 스캔을 지원하지 않아요. 사진에서 읽기나 링크 붙여넣기를 써 주세요.', true);
+    const video = qrEl('qr-video');
+    const view = qrEl('qr-view');
+    if (!video) return;
+    if (!window.isSecureContext) {
+      qrSetStatus('카메라는 https 주소에서만 열 수 있어요. 사진에서 읽기나 링크 붙여넣기를 써 주세요.', true);
       return;
     }
-    const video = qrEl('qr-video');
+    if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
+      qrSetStatus('이 브라우저는 카메라 스캔을 지원하지 않아요. 사진에서 읽기나 링크 붙여넣기를 써 주세요.' + qrCamHelpTail(), true);
+      return;
+    }
+    /* 카메라 화면을 먼저 켜 둔다 — display:none 인 <video> 는 play() 가 멈추거나 검게 남는다 */
+    if (view) view.hidden = false;
+    video.muted = true;
+    video.playsInline = true;
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+    video.autoplay = true;
     qrSetStatus('카메라를 켜는 중이에요…');
+    let stream = null;
     try {
-      QR.stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 1280 } },
-        audio: false
-      });
+      stream = await qrGetStream();
     } catch (e) {
       const name = e && e.name;
-      const denied = name === 'NotAllowedError' || name === 'SecurityError' || name === 'PermissionDeniedError';
+      if (view) view.hidden = true;
       QR.stream = null;
-      qrSetStatus(denied
-        ? '카메라 권한이 꺼져 있어요. 브라우저 설정에서 카메라를 허용하거나, 사진에서 읽기를 써 주세요.'
-        : '카메라를 열지 못했어요. 사진에서 읽기나 링크 붙여넣기를 써 주세요.', true);
+      if (qrFatalCameraError(e)) {
+        qrSetStatus('카메라 권한이 꺼져 있어요. 브라우저 주소창 옆 설정에서 카메라를 허용한 뒤 다시 눌러 주세요.' + qrCamHelpTail(), true);
+      } else if (name === 'NotFoundError' || name === 'DevicesNotFoundError' || name === 'OverconstrainedError') {
+        qrSetStatus('이 기기에서 쓸 수 있는 카메라를 찾지 못했어요. 사진에서 읽기를 써 주세요.', true);
+      } else if (name === 'NotReadableError' || name === 'TrackStartError' || name === 'AbortError') {
+        qrSetStatus('카메라를 다른 앱이 쓰고 있거나 열 수 없어요. 카메라 앱을 닫고 다시 눌러 주세요.', true);
+      } else {
+        qrSetStatus('카메라를 열지 못했어요. 사진에서 읽기나 링크 붙여넣기를 써 주세요.' + qrCamHelpTail(), true);
+      }
       return;
     }
-    if (video) {
-      video.srcObject = QR.stream;
-      try { await video.play(); } catch (e) { /* 자동 재생이 막히면 아래 루프가 준비 상태를 본다 */ }
+    /* 권한은 그대로인데 시트를 닫아 버린 경우 — 켜자마자 정리한다 */
+    const modal = qrEl('qr-modal');
+    if (modal && modal.hidden) {
+      stream.getTracks().forEach((t) => { try { t.stop(); } catch (e) { /* 무시 */ } });
+      return;
     }
-    const view = qrEl('qr-view');
-    if (view) view.hidden = false;
+    QR.stream = stream;
+    video.srcObject = stream;
+    await qrWaitVideo(video, 6000);
+    let playing = true;
+    try {
+      const p = video.play();
+      if (p && typeof p.then === 'function') {
+        await Promise.race([
+          p.catch(() => { playing = false; }),
+          new Promise((r) => setTimeout(r, 2500)) /* play() 가 끝나지 않는 기기에서도 아래로 넘어간다 */
+        ]);
+      }
+    } catch (e) { playing = false; }
+    if (!QR.stream) return; /* 그 사이 멈추면 이미 정리된 상태 */
+    if (!(video.videoWidth || video.readyState >= 2)) {
+      qrStopCamera();
+      qrSetStatus('카메라 영상이 오지 않아요. 페이지를 새로 고치거나 사진에서 읽기를 써 주세요.' + qrCamHelpTail(), true);
+      return;
+    }
     qrCamLabel('스캔 멈추기', true);
     qrSetStatus('QR을 사각형 안에 맞춰 주세요.');
     QR.scanning = true;
     qrTick();
+    if (!playing) {
+      /* 자동 재생이 막힌 기기 — 화면을 한 번 누르면 이어서 재생한다 */
+      qrSetStatus('화면을 한 번 눌러 카메라를 켜 주세요.');
+      if (view) view.addEventListener('pointerdown', () => {
+        if (!QR.scanning) return;
+        video.play().then(() => {
+          if (QR.scanning) qrSetStatus('QR을 사각형 안에 맞춰 주세요.');
+        }).catch(() => { /* 무시 */ });
+      }, { once: true });
+    }
   }
   function qrStopCamera() {
     QR.scanning = false;
