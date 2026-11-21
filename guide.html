@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0d18" />
+<meta name="description" content="몽픽(MongPick) 이용 가이드 — 꿈으로 로또 번호 5조합 뽑는 방법, 생일·사주 기운으로 뽑기, 오늘의 꿈 사례, 실물 용지 QR 당첨 확인 방법을 차례로 안내합니다. 돼지꿈·뱀꿈·조상님·불·물·똥·용·호랑이·돈·이빨·거미 등 대표 꿈 해몽과 숫자 사전, 자주 묻는 질문도 함께 정리했어요." />
+<title>이용 가이드 · 꿈 해몽 숫자 사전 · 몽픽</title>
+<link rel="canonical" href="https://mongpick-kr.github.io/guide.html" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="몽픽" />
+<meta property="og:title" content="이용 가이드 · 꿈 해몽 숫자 사전 · 몽픽" />
+<meta property="og:description" content="꿈 한 줄로 번호 5조합을 뽑는 방법부터 돼지꿈·뱀꿈·조상님 꿈 등 대표 꿈 해몽 숫자 사전, 자주 묻는 질문까지 한 페이지에 정리했어요. 재미로 보는 참고용입니다." />
+<meta property="og:url" content="https://mongpick-kr.github.io/guide.html" />
+<meta property="og:image" content="https://mongpick-kr.github.io/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="ko_KR" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="이용 가이드 · 꿈 해몽 숫자 사전 · 몽픽" />
+<meta name="twitter:description" content="꿈으로 번호 5조합 뽑기, 생일 기운으로 뽑기, 대표 꿈 해몽 숫자 사전, 자주 묻는 질문." />
+<meta name="twitter:image" content="https://mongpick-kr.github.io/og-cover.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "몽픽 이용 가이드 · 꿈 해몽 숫자 사전",
+  "description": "몽픽(MongPick)에서 꿈으로 로또 번호 5조합을 뽑는 방법, 생일·사주 기운으로 뽑기, 오늘의 꿈 사례, 실물 용지 QR 당첨 확인 방법과 대표 꿈 해몽 숫자 사전을 정리한 안내 페이지입니다.",
+  "inLanguage": "ko",
+  "datePublished": "2026-11-21",
+  "dateModified": "2026-11-21",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://mongpick-kr.github.io/guide.html" },
+  "author": { "@type": "Organization", "name": "몽픽(MongPick)", "url": "https://mongpick-kr.github.io/" },
+  "publisher": { "@type": "Organization", "name": "몽픽(MongPick)", "url": "https://mongpick-kr.github.io/" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "몽픽은 무료인가요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "네. 회원가입도 로그인도 결제도 없습니다. 웹 주소로 바로 열리고, 홈 화면에 앱처럼 설치해서 쓸 수도 있습니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "뽑은 번호가 당첨을 보장하나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "아니요. 몽픽은 꿈 상징과 날짜 기운을 계산해 조합을 만드는 재미용 참고 도구입니다. 로또는 매 회차 독립 추첨이므로 어떤 도구도 당첨을 보장할 수 없습니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "꿈 내용과 생일이 서버로 전송되나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "아니요. 꿈 내용, 생일, 뽑은 조합은 이용자 기기 브라우저(localStorage)에만 저장되고 외부 서버로 보내지 않습니다. 방문·탭 이용 통계만 Google Analytics 4로 집계합니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "번호는 몇 조합이 나오나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "꿈이나 생일로 한 번 뽑으면 6개 번호로 된 조합 5개가 나옵니다. 같은 입력에는 같은 조합이 나오도록 고정되어 있습니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "같은 꿈을 다시 넣으면 번호가 바뀌나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "바뀌지 않습니다. 몽픽은 꿈·생일·뺀 번호를 그대로 고정해 계산하므로 같은 입력과 같은 회차에서는 같은 5조합이 나옵니다. 다른 조합을 보고 싶으면 꿈 표현을 조금 바꾸거나 조건(빼기·고정 번호·생일)을 바꿔 주세요." }
+    },
+    {
+      "@type": "Question",
+      "name": "당첨 결과는 언제 반영되나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "토요일 20:35 추첨 뒤 동행복권 결과가 공개되면, 몽픽이 이를 받아 파일에 반영하고 홈페이지가 다시 만들어집니다. 반영 시각은 보통 추첨 후 10~30분 사이입니다. 급하면 직접 채점 칸에 당첨번호를 넣어 확인할 수 있습니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "실물 로또 용지 QR은 어떻게 읽나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "앱 상단의 QR 버튼을 누르고 용지 오른쪽 위 QR을 비추면 됩니다. 카메라가 어려우면 찍어 둔 사진으로 읽거나 QR 링크를 붙여넣어도 됩니다. QR은 기기 안에서만 읽고 서버로 보내지 않습니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "번호함은 어디에 저장되나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "이 기기 브라우저 저장소에만 쌓입니다(회차·추첨일·꿈 요약·조합). 다른 기기와 자동으로 동기화되지 않고, 브라우저 데이터를 지우면 함께 지워집니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "만 19세 미만도 쓸 수 있나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "앱을 구경하고 번호를 뽑아 보는 것은 가능하지만, 복권 및 복권기금법에 따라 만 19세 미만은 복권을 구매할 수 없습니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "꿈 해몽 숫자는 무엇을 근거로 정해졌나요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "몽픽이 구조화한 꿈 상징 11,705개 색인과 실전 꿈 사례 155건을 바탕으로, 단어마다 상징 기본수와 모양·소리·의미 원리를 붙여 정리했습니다. 이 페이지의 숫자도 앱이 쓰는 데이터와 같은 값입니다." }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{
+  --bg:#080b14; --bg-2:#0e1424; --card:rgba(16,21,35,.80); --line:rgba(255,255,255,.10);
+  --text:#edf0f8; --muted:#98a1ba; --muted-2:#6f7896;
+  --accent:#8d9cff; --accent-2:#6ee7d0; --gold:#ffd479;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html{margin:0; padding:0; background-color:#080b14; color-scheme:dark; scroll-behavior:smooth;}
+body{
+  margin:0; padding:0 16px calc(44px + env(safe-area-inset-bottom));
+  background-color:#080b14;
+  background-image:
+    radial-gradient(1200px 600px at 20% -10%, rgba(141,156,255,.20), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(255,212,121,.12), transparent 55%),
+    radial-gradient(800px 500px at 50% 110%, rgba(110,231,208,.10), transparent 60%),
+    linear-gradient(180deg, #0a0e1a 0%, #080b14 45%, #06080f 100%);
+  background-repeat:no-repeat;
+  color:var(--text);
+  font-family:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  font-size:15px; line-height:1.66; letter-spacing:-.01em;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+.wrap{max-width:620px; margin:0 auto;}
+a{color:#c7cff0;}
+
+/* 상단 */
+.top{padding:22px 2px 14px; border-bottom:1px solid var(--line);}
+.brand{display:flex; align-items:center; gap:9px;}
+.brand-mark{display:inline-flex; width:30px; height:30px; flex:0 0 auto;}
+.brand-name{font-size:19px; font-weight:800; letter-spacing:-.02em; color:#fff; text-decoration:none;}
+.brand-nav{margin-left:auto; display:flex; gap:8px;}
+.brand-nav a{
+  font-size:12px; font-weight:700; color:#dfe4f2; text-decoration:none;
+  padding:7px 11px; border-radius:10px; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.04);
+}
+.brand-nav a:hover{background:rgba(255,255,255,.09);}
+.top h1{font-size:23px; line-height:1.34; margin:16px 0 6px; font-weight:800; letter-spacing:-.02em;}
+.top .sub{font-size:12.5px; color:var(--muted); margin:0;}
+.top .sub b{color:var(--gold); font-weight:700;}
+
+/* 요약 */
+.summary{
+  margin:18px 0 6px; padding:16px 16px 15px; border-radius:16px;
+  background:linear-gradient(135deg, rgba(141,156,255,.13), rgba(110,231,208,.07) 55%, rgba(255,212,121,.10));
+  border:1px solid var(--line);
+}
+.summary p{margin:0; font-size:14px; line-height:1.72; color:#e6eaf7; word-break:keep-all;}
+.summary p + p{margin-top:8px;}
+.summary b{color:var(--accent-2);}
+
+/* 목차 */
+.toc{margin:18px 0 0; display:flex; flex-wrap:wrap; gap:8px;}
+.toc a{
+  font-size:12.5px; font-weight:700; text-decoration:none; color:#dfe4f2;
+  padding:9px 12px; border-radius:11px; border:1px solid var(--line); background:rgba(255,255,255,.035);
+}
+.toc a:hover{border-color:rgba(255,212,121,.45); color:#ffe6b0;}
+
+/* 본문 */
+section{margin:30px 0 0; scroll-margin-top:14px;}
+h2{
+  font-size:16px; font-weight:800; letter-spacing:-.01em; color:#fff;
+  margin:0 0 12px; display:flex; align-items:baseline; gap:8px; word-break:keep-all;
+  padding-bottom:9px; border-bottom:1px solid var(--line);
+}
+h2 .no{
+  flex:0 0 auto; font-size:11px; font-weight:800; color:#0b0f19;
+  background:linear-gradient(135deg, var(--gold), #ffb86b); border-radius:6px; padding:2px 7px;
+  letter-spacing:0;
+}
+h3{font-size:14px; font-weight:800; color:#fff; margin:18px 0 7px; letter-spacing:-.01em; word-break:keep-all;}
+section > p{margin:0 0 9px; color:#cfd6e8; font-size:14px; word-break:keep-all;}
+section > p:last-child{margin-bottom:0;}
+strong{color:#fff; font-weight:700;}
+.note{color:var(--muted); font-size:12.5px; word-break:keep-all;}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.92em; color:#ffe6b0;}
+
+/* 단계 카드 */
+.steps{display:grid; gap:11px; margin:4px 0 0;}
+.step{
+  padding:14px 15px 13px; border-radius:15px; background:var(--card); border:1px solid var(--line);
+}
+.step-top{display:flex; align-items:center; gap:9px; margin-bottom:6px;}
+.step-no{
+  flex:0 0 auto; width:24px; height:24px; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:800; color:#0b0f19;
+  background:linear-gradient(135deg, var(--accent-2), #7fd8ff);
+}
+.step-t{font-size:14px; font-weight:800; color:#fff; letter-spacing:-.01em;}
+.step p{margin:0; font-size:13.5px; color:#c6cee2; word-break:keep-all;}
+.step p + p{margin-top:6px;}
+
+/* 표 */
+.table-wrap{margin:8px 0 10px; border:1px solid var(--line); border-radius:13px; overflow:hidden;}
+table{width:100%; border-collapse:collapse; font-size:13px;}
+th, td{padding:10px 11px; text-align:left; vertical-align:top; word-break:keep-all;}
+thead th{background:rgba(255,255,255,.045); color:var(--muted); font-weight:700; font-size:11.5px; letter-spacing:-.01em;}
+tbody tr + tr td{border-top:1px solid var(--line);}
+tbody td:first-child{color:#fff; font-weight:700; white-space:nowrap;}
+td .nums{color:var(--gold); font-weight:800; letter-spacing:0;}
+.ball-label{font-size:11px; color:var(--muted); font-weight:700; align-self:center; margin-right:1px;}
+td .why{color:var(--muted); font-size:12.5px; display:block; margin-top:3px;}
+
+/* 사전 카드 */
+.dict{display:grid; gap:12px; margin:8px 0 0;}
+.dict-card{
+  padding:15px 16px 14px; border-radius:16px; border:1px solid var(--line); background:var(--card);
+}
+.dict-head{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:7px;}
+.dict-name{font-size:15px; font-weight:800; color:#fff; letter-spacing:-.01em;}
+.balls{display:inline-flex; gap:5px; flex-wrap:wrap;}
+.ball{
+  width:26px; height:26px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+  font-size:11.5px; font-weight:800; color:#151a2a;
+  background:linear-gradient(160deg,#ffe9b0,#ffc86b); box-shadow:inset 0 -1px 0 rgba(0,0,0,.16);
+}
+.ball.alt{background:linear-gradient(160deg,#d8e0ff,#9fb0ff);}
+.dict-card p{margin:0 0 7px; font-size:13.5px; color:#c9d1e5; word-break:keep-all;}
+.dict-card p:last-child{margin-bottom:0;}
+.tagline{font-size:12px; color:var(--accent-2); font-weight:700; margin:0 0 6px;}
+.variants{font-size:12.5px; color:var(--muted); word-break:keep-all;}
+
+/* FAQ */
+details.faq{
+  border:1px solid var(--line); border-radius:13px; background:rgba(255,255,255,.025);
+  padding:0; margin:0 0 8px;
+}
+details.faq summary{
+  cursor:pointer; list-style:none; padding:13px 15px; font-size:13.5px; font-weight:700; color:#e9edf8;
+  display:flex; gap:9px; align-items:flex-start; word-break:keep-all;
+}
+details.faq summary::-webkit-details-marker{display:none;}
+details.faq summary::after{content:"+"; margin-left:auto; color:var(--gold); font-weight:800; font-size:15px; line-height:1.2;}
+details.faq[open] summary::after{content:"−";}
+details.faq .a{padding:0 15px 14px; font-size:13.5px; color:#c6cee2; word-break:keep-all;}
+details.faq .a p{margin:0;}
+details.faq .a p + p{margin-top:7px;}
+
+/* 안내 박스 */
+.callout{
+  margin:10px 0 0; padding:14px 15px; border-radius:14px;
+  border:1px solid rgba(255,157,122,.28); background:rgba(255,157,122,.07);
+}
+.callout p{margin:0; font-size:13.5px; color:#f3ddd4; word-break:keep-all;}
+.callout p + p{margin-top:7px;}
+.callout b{color:#ffb59b;}
+.tipbox{
+  margin:10px 0 0; padding:13px 15px; border-radius:14px;
+  border:1px solid rgba(110,231,208,.24); background:rgba(110,231,208,.06);
+}
+.tipbox p{margin:0; font-size:13px; color:#d5f3ec; word-break:keep-all;}
+
+/* 하단 */
+.foot{
+  margin:32px 0 0; padding:16px 2px 0; border-top:1px solid var(--line);
+  display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; justify-content:space-between;
+  font-size:12px; color:var(--muted-2);
+}
+.foot .links{display:flex; gap:8px; flex-wrap:wrap;}
+.foot .back{
+  display:inline-flex; align-items:center; gap:6px; padding:9px 14px; border-radius:11px;
+  border:1px solid rgba(255,255,255,.18); color:#dfe4f2; text-decoration:none;
+  font-size:12.5px; font-weight:700; background:rgba(255,255,255,.04);
+}
+.foot .back:hover{background:rgba(255,255,255,.09);}
+.contact{
+  margin:10px 0 0; padding:15px 16px; border-radius:14px; background:var(--card); border:1px solid var(--line);
+}
+.contact .label{font-size:11.5px; color:var(--muted-2); font-weight:700; letter-spacing:.02em;}
+.contact a.mail{display:inline-block; margin-top:5px; font-size:15px; font-weight:800; color:var(--accent-2); text-decoration:none; word-break:break-all;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8ea0ff"/><stop offset="1" stop-color="#ffd479"/></linearGradient></defs><circle cx="16" cy="16" r="13" fill="none" stroke="url(#mg)" stroke-width="2"/><path d="M21.5 10.5a7.5 7.5 0 1 0 0 11 9 9 0 1 1 0-11z" fill="url(#mg)"/></svg>
+      </span>
+      <a class="brand-name" href="./index.html">몽픽</a>
+      <nav class="brand-nav" aria-label="바로가기">
+        <a href="./index.html">앱 열기</a>
+        <a href="./privacy.html">개인정보</a>
+      </nav>
+    </div>
+    <h1>이용 가이드 · 꿈 해몽 숫자 사전</h1>
+    <p class="sub">정리 <b>2026-11-21</b> · 몽픽(MongPick) 웹 앱</p>
+  </header>
+
+  <div class="summary">
+    <p><b>몽픽은 어젯밤 꿈을 한 줄 적으면 로또 번호 5조합을 뽑아 주는 웹 앱입니다.</b> 꿈이 기억나지 않는 날에는 오늘 본 사물이나 생일만으로도 뽑을 수 있고, 산 로또 용지의 QR을 읽어 바로 채점할 수도 있어요.</p>
+    <p>이 페이지는 <b>몽픽을 처음 여는 분</b>을 위해 만든 안내서입니다. 쓰는 방법 네 가지, 번호가 나오는 방식, 자주 찾는 꿈 해몽과 숫자, 자주 묻는 질문을 한 번에 읽을 수 있게 정리했어요.</p>
+    <p>모든 조합은 <b>재미로 보는 참고용</b>이고, 당첨을 보장하지 않습니다. 만 19세 미만은 복권을 구매할 수 없어요.</p>
+  </div>
+
+  <nav class="toc" aria-label="목차">
+    <a href="#about">몽픽 소개</a>
+    <a href="#howto">이용 가이드</a>
+    <a href="#engine">번호가 나오는 방식</a>
+    <a href="#dictionary">꿈 해몽 숫자 사전</a>
+    <a href="#faq">자주 묻는 질문</a>
+    <a href="#notice">참고용 안내</a>
+  </nav>
+
+  <main>
+
+    <section id="about">
+      <h2><span class="no">1</span>몽픽은 무엇을 하는 앱인가요</h2>
+      <p>몽픽은 <strong>꿈에 나온 것들을 숫자로 옮겨 로또 6/45 조합을 만들어 주는 도구</strong>입니다. 꿈을 해석해서 운세를 단정하지는 않습니다. 꿈에 나온 사물·동물·사람·행동을 하나씩 숫자로 바꾸고, 그 숫자들을 로또 용지처럼 7×7 칸에 놓아 자리와 겹침을 보고, 조건에 맞는 조합 5개를 골라 드려요.</p>
+      <p>회원가입도 로그인도 없습니다. 주소를 열면 바로 쓸 수 있고, 홈 화면에 추가해서 앱처럼 열 수도 있습니다. 꿈 내용·생일·뽑은 조합은 <strong>이용자 기기 브라우저에만</strong> 저장되고 서버로 보내지 않습니다. 자세한 내용은 <a href="./privacy.html">개인정보처리방침</a>에 적어 두었어요.</p>
+      <p>몽픽이 쓰는 자료는 직접 구조화한 <strong>꿈 상징 11,705개 색인</strong>과 <strong>실전 꿈 사례 155건</strong>, 그리고 7×7 수리 배열과 만세력(생년월일의 간지) 계산입니다. 이 페이지 아래 <a href="#dictionary">꿈 해몽 숫자 사전</a>에 적은 숫자도 앱이 실제로 쓰는 데이터와 같은 값입니다.</p>
+    </section>
+
+    <section id="howto">
+      <h2><span class="no">2</span>이용 가이드 — 네 가지 쓰는 방법</h2>
+      <p>앱 아래쪽 탭은 <strong>꿈 · 오늘의 꿈 · 운세 뽑기 · 추천 배경 · 안내</strong> 다섯 개입니다. 상황에 맞는 탭 하나만 쓰면 되고, 나머지는 결과를 들여다보는 화면이에요.</p>
+
+      <h3>① 꿈으로 뽑기 — 어젯밤 꿈이 기억날 때</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-top"><span class="step-no">1</span><span class="step-t">꿈을 한 줄로 적어요</span></div>
+          <p>“맑은 물에 빠졌는데 부추랑 국자를 들고 있었어요”처럼 <strong>본 것과 한 일</strong>을 그대로 적으면 됩니다. 길게 쓰지 않아도 되고, 400자까지 들어갑니다.</p>
+        </div>
+        <div class="step">
+          <div class="step-top"><span class="step-no">2</span><span class="step-t">필요하면 조건을 더해요(모두 선택)</span></div>
+          <p><strong>생일 넣기</strong> — 생년월일과 태어난 시간을 넣으면 내 기운까지 반영합니다. <strong>빼고 싶은 번호</strong> — 조합에서 완전히 빠집니다. <strong>꼭 넣고 싶은 번호</strong> — 고른 수가 5조합 모두에 들어갑니다.</p>
+        </div>
+        <div class="step">
+          <div class="step-top"><span class="step-no">3</span><span class="step-t">‘번호 뽑기’를 눌러요</span></div>
+          <p>6개 번호로 된 조합 5개가 나옵니다. 첫 화면에는 대표 조합 하나와 한 줄 요약이 보이고, <strong>‘이 번호가 나온 배경 자세히 보기’</strong>를 누르면 단어별 근거와 공 하나하나의 설명이 이어집니다.</p>
+        </div>
+        <div class="step">
+          <div class="step-top"><span class="step-no">4</span><span class="step-t">뽑은 조합은 번호함에 자동으로 쌓여요</span></div>
+          <p>회차·추첨일·꿈 요약과 함께 이 기기에 저장됩니다. <strong>안내</strong> 탭의 ‘내 번호함’에서 구매한 번호만 모아 보거나, 필요 없는 조합을 지우거나, 추첨 뒤에 한 번에 채점할 수 있어요.</p>
+        </div>
+      </div>
+
+      <h3>② 생일·사주 기운으로 뽑기 — 꿈이 기억 안 날 때</h3>
+      <p><strong>운세 뽑기</strong> 탭은 두 갈래입니다. <strong>오늘 본 것</strong>은 꿈 대신 낮에 인상 깊었던 것(넘친 커피, 쌓인 택배 상자 같은 것)을 적어 뽑는 방식이고, <strong>생일만으로</strong>는 생년월일과 태어난 시간만 넣어 뽑습니다.</p>
+      <p>생일로 뽑을 때는 <strong>홀짝 반반, 번호대 고루, 간격 넓게</strong>처럼 조건을 세게 걸어 조합을 만듭니다. 생일에서 나온 수를 출발점으로 잡고, 그 출발점의 가로줄·세로칸·대각선에 놓인 수를 후보로 삼아요. 생일 계산은 이 기기 안에서만 이루어지고, 결과 화면의 ‘오늘 내 기운’에서 그날의 기운을 세 줄로 함께 보여 드립니다.</p>
+
+      <h3>③ 오늘의 꿈 사례 — 남이 꾼 꿈에서 번호를 담을 때</h3>
+      <p>꿈을 안 꾼 날, 혹은 내 꿈에서 마땅한 수가 안 나왔을 때 쓰는 탭입니다. <strong>실제 꿈 사례</strong>를 요일별로 모아 두고, 사례마다 이야기 속 상징으로 <strong>미리 계산해 고정한 6개 번호</strong>를 함께 보여 줍니다. 카드의 ‘이 번호 담기’를 누르면 이번 회차 조합으로 번호함에 들어가요.</p>
+      <p>위쪽 회차 칩으로 지난 회차를 오갈 수 있고, 지난 회차 카드에는 <strong>당첨 배지</strong>(예: 5등 당첨 · 3개 일치)가 붙습니다. ‘당첨된 꿈만 보기’로 걸러 볼 수도 있어요.</p>
+
+      <h3>④ 실물 용지 QR 채점 — 이미 산 로또가 있을 때</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-top"><span class="step-no">1</span><span class="step-t">상단 QR 버튼을 눌러요</span></div>
+          <p>‘카메라로 스캔’을 고르고 용지 <strong>오른쪽 위 QR</strong>을 사각형 안에 맞춰 주세요.</p>
+        </div>
+        <div class="step">
+          <div class="step-top"><span class="step-no">2</span><span class="step-t">카메라가 안 되면 사진이나 링크로</span></div>
+          <p>‘사진에서 읽기’로 용지 사진을 올리거나, QR 링크를 직접 붙여넣어도 됩니다. 인앱 브라우저에서는 카메라가 막힐 수 있어 이 두 방법을 권해요.</p>
+        </div>
+        <div class="step">
+          <div class="step-top"><span class="step-no">3</span><span class="step-t">게임별 등수를 바로 확인해요</span></div>
+          <p>최근 200회차 결과와 대조해 <strong>게임마다 일치 수와 등수</strong>(1~5등/낙첨)를 보여 줍니다. 아직 추첨 전인 회차는 ‘추첨 대기 중’으로 나오고, 그 번호를 번호함에 저장해 두면 추첨 뒤 자동으로 채점됩니다.</p>
+        </div>
+      </div>
+      <p class="note">QR은 기기 안에서만 읽고 서버로 보내지 않습니다. 최근 200회차 밖의 오래된 용지는 동행복권 공식 결과 링크로 안내합니다.</p>
+
+      <h3>그 밖에 알아 두면 좋은 것</h3>
+      <div class="tipbox">
+        <p><strong>홈 화면 설치</strong> — 안내 탭의 ‘앱으로 설치’를 누르면 주소창 없이 열립니다. 아이폰 사파리는 공유 → ‘홈 화면에 추가’.<br>
+        <strong>결과 공유·저장</strong> — 결과 카드에서 이미지로 저장하거나 공유 시트로 보낼 수 있어요.<br>
+        <strong>지우기</strong> — 안내 탭의 ‘전체 비우기’ 또는 브라우저 설정에서 이 사이트 데이터를 삭제하면 됩니다. 지운 값은 되살아나지 않아요.</p>
+      </div>
+    </section>
+
+    <section id="engine">
+      <h2><span class="no">3</span>번호는 어떻게 나오나요</h2>
+      <p>꿈 단어 하나에서 바로 6개 번호를 뽑지는 않습니다. <strong>근거를 여러 겹 모은 뒤, 겹치는 수를 세워 조합을 만듭니다.</strong> 순서는 이렇습니다.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">단계</th><th scope="col">하는 일</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1차 근거</td><td>꿈 문장에서 찾은 단어마다 상징 기본수, 실전 사례에서 확인된 수, 꿈에 나온 숫자, 모양·소리 원리, 생일 기운수를 붙입니다.</td></tr>
+            <tr><td>자리 근거</td><td>그 수를 7×7 번호판(1~7, 8~14 … 43~45)에 놓고 같은 가로줄·세로칸·대각선·연번·같은 끝자리에 있는 수를 후보로 더합니다.</td></tr>
+            <tr><td>겹친 수</td><td>서로 다른 근거 두 개 이상이 같은 수를 가리킨 경우만 ‘겹친 수’로 셉니다. 한 근거만 있는 수보다 세게 봅니다.</td></tr>
+            <tr><td>조합 제약</td><td>6개 중복 없이, 간격 다양성(AC) 7 이상, 홀짝 2:4~4:2, 번호대 3구간 이상, 합 100~175 안에서 5조합을 만듭니다.</td></tr>
+            <tr><td>고정</td><td>같은 입력(꿈+생일+뺀 번호)이면 같은 5조합이 나오도록 고정되어 있습니다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>숫자를 붙이는 원리는 여섯 가지입니다. <strong>형상수</strong>(사물의 윤곽이 수를 닮은 경우), <strong>소리수</strong>(‘이사’가 2·4, ‘칠판’이 7처럼 발음이 수와 겹치는 경우), <strong>의미수</strong>(으뜸은 1, 다섯 갈래는 5처럼 뜻의 크기가 수를 정하는 경우), <strong>상징 기본수</strong>(꿈 상징 DB에 붙은 기본값), <strong>생일 기운수</strong>(생년월일의 간지 분포에서 나온 수), <strong>자리수</strong>(7×7 번호판에서의 위치)입니다.</p>
+      <p><strong>괄호가 붙은 항목은 조건이 맞을 때만</strong> 씁니다. 예를 들어 사전에 적힌 ‘물(빠짐)’은 꿈 문장에 빠지는 장면이 있을 때만 적용되고, 그냥 물이 나온 꿈에는 ‘물’의 기본수가 쓰입니다. 비슷하게 ‘불(화재)’와 ‘불(전등)’도 따로 봅니다.</p>
+      <p class="note">몽픽은 로또 번호를 ‘예언’하지 않습니다. 같은 꿈을 꾼 사람이 여럿이어도 조합은 입력에 따라 달라지고, 어떤 조합도 당첨을 보장하지 않아요. 로또는 매 회차 독립 추첨입니다.</p>
+    </section>
+
+    <section id="dictionary">
+      <h2><span class="no">4</span>대표 꿈 해몽 &amp; 로또 숫자 사전</h2>
+      <p>몽픽이 자주 찾는 꿈 열 가지를 골라, <strong>앱이 실제로 쓰는 숫자</strong>와 그 숫자가 붙은 까닭을 함께 적었습니다. 사전의 숫자는 ‘이 꿈을 꾸면 이 번호가 나온다’는 뜻이 아니라, <strong>앱이 그 단어를 숫자로 옮길 때 쓰는 기본값</strong>입니다. 실제 조합은 문장 속 다른 단어·생일·자리와 겹치면서 달라집니다.</p>
+
+      <div class="tipbox">
+        <p><strong>숫자 읽는 법</strong> — ‘0으로 끝나는 수’는 10·20·30·40을 뜻합니다. ‘9로 끝나는 수’는 9·19·29·39예요. 사전에 여러 수가 있으면 그중 하나가 아니라 <strong>모두 후보</strong>로 올라간 뒤, 다른 근거와 겹치는 수가 조합에 남습니다.</p>
+      </div>
+
+      <div class="dict">
+
+        <article class="dict-card">
+          <div class="dict-head">
+            <span class="dict-name">돼지꿈</span>
+            <span class="balls"><span class="ball">7</span><span class="ball">8</span><span class="ball">12</span></span>
+          </div>
+          <p class="tagline">재물이 들어오는 꿈으로 가장 많이 이야기되는 상징</p>
+          <p>돼지는 살이 오르고 새끼를 많이 낳는 동물이라 예부터 <strong>재물·풍요</strong>로 읽혔습니다. 몽픽은 ‘돼지’에 <strong>7·8·12</strong>를 붙였고, 색과 상태에 따라 수가 갈립니다. 검은 돼지는 8·40, 금돼지는 8, 돼지발은 8, 돼지코는 8·11입니다.</p>
+          <p>품에 안기거나 따라오는 장면은 수가 강해지고, 도망가거나 잃는 장면은 후보에서 힘이 빠집니다. 꿈에서 돼지를 <strong>안았는지, 쫓았는지</strong>를 함께 적으면 결과가 더 달라져요.</p>
+          <p class="variants">같이 보기 — 돼지우리 42 · 돼지머리 28 · 돼지고기 13</p>
+        </article>
+
+        <article class="dict-card">
+          <div class="dict-head">
+            <span class="dict-name">뱀꿈</span>
+            <span class="balls"><span class="ball">4</span><span class="ball">10</span></span>
+          </div>
+          <p class="tagline">감춰진 힘, 관계의 변화</p>
+          <p>뱀은 허물을 벗고 몸을 감는 동물이라 <strong>변화와 감춰진 힘</strong>으로 읽습니다. 몸을 감아 올린 나선이 숫자 9의 형상이라는 원리도 함께 봅니다. 몽픽의 ‘뱀’ 기본수는 <strong>4·10</strong>이고, 뱀머리는 4, 뱀알은 29입니다.</p>
+          <p>뱀이 다가오면 관계가 가까워지는 쪽으로, 물러가면 거리가 생기는 쪽으로 해석의 방향이 잡힙니다. 무서워서 도망쳤는지, 손으로 잡았는지도 적어 두면 좋아요.</p>
+          <p class="variants">같이 보기 — 구렁이 9·28 · 이무기 25</p>
+        </article>
+
+        <article class="dict-card">
+          <div class="dict-head">
+            <span class="dict-name">조상님·돌아가신 분 꿈</span>
+            <span class="balls"><span class="ball">31</span></span>
+          </div>
+          <p class="tagline">집안의 기운, 돌봄과 당부</p>
+          <p>조상이 나오는 꿈은 <strong>집안의 기운과 돌봄</strong>으로 읽습니다. ‘조상’의 기본수는 <strong>31</strong>입니다. 함께 나오는 무덤은 3·17, 장례는 9, 장례식은 22·44, 해골은 37·44로 따로 잡혀 있어요.</p>
+          <p>조상이 웃으며 말을 거는 장면과, 산소나 무덤을 찾아가는 장면은 같은 계열로 묶이지만 수는 갈립니다. 꿈에서 <strong>무엇을 하라고 했는지</strong>를 적으면 문장 안의 다른 상징(음식·돈·집)이 함께 후보로 올라갑니다.</p>
+          <p class="variants">같이 보기 — 제사 6 · 산소 5·17 · 유골 37·44</p>
+        </article>
+
+        <article class="dict-card">
+          <div class="dict-head">
+            <span class="dict-name">불·화재 꿈</span>
+            <span class="balls"><span class="ball">2</span><span class="ball">4</span><span class="ball">19</span><span class="ball">33</span></span>
+          </div>
+          <p class="tagline">확 타오르는 기운, 큰 변화</p>
+          <p>불은 규모가 곧 수의 크기입니다. 몽픽은 <strong>불(화재)</strong>에 <strong>2·4·19·33</strong>을 붙였고, ‘화재’라는 단어는 따로 25, 불꽃은 9, 용광로는 41로 잡혀 있어요. 전등 불처럼 작은 불은 <strong>불(전등) 41</strong>로 갈라집니다.</p>
+          <p>불이 크게 번지면 수가 커지고, 꺼지거나 연기만 나면 힘이 줄어듭니다. 끄는 데 성공했는지, 도망쳤는지에 따라 해석의 결도 달라집니다.</p>
+          <p class="variants">같이 보기 — 연기(기체) 16 · 재 23 · 성냥 1·27</p>
+        </article>
+
+        <article class="dict-card">
+          <div class="dict-head">
+            <span class="dict-name">물·바다 꿈</span>
+            <span class="balls"><span class="ball">3</span><span class="ball">10</span><span class="ball">16</span></span>
+          </div>
+          <p class="tagline">흐르는 재물과 감정의 양</p>
+          <p>물은 맑으면 강화, 탁하면 약화, 넘치면 확장으로 읽습니다. ‘물’의 기본수는 <strong>3·10·16</strong>, ‘바다’는 <strong>1·5</strong>입니다. 상태에 따라 물(가득참) 10·30·45, 물(빠짐) 4·43·44, 물(흐르는) 11, 물(끓음) 11, 똥물 17로 갈라져요.</p>
+          <p>맑은 물에 빠졌다는 꿈은 물(빠짐)과 물의 기본수가 함께 걸립니다. 바다에서 헤엄쳤는지, 빠져 허우적댔는지에 따라 후보의 무게가 달라집니다.</p>
+          <p class="variants">같이 보기 — 강 1·8·13·34 · 호수 3·8·34 · 가랑비 1·11·18</p>
+        </article>
+
+        <article class="dict-card">
+          <div class="dict-head">
+            <span class="dict-name">똥·대변 꿈</span>
+            <span class="balls"><span class="ball">16</span></span>
+          </div>
+          <p class="tagline">밖으로 나오는 재물, 뜻밖의 이득</p>
+          <p>똥은 더러운 것이 아니라 <strong>몸 밖으로 나오는 것</strong>이라 재물이 들어오는 쪽으로 읽는 관례가 있습니다. ‘대변’의 기본수는 <strong>16</strong>, ‘변’은 6·16, 똥통은 33, 똥물은 17, 황금똥은 37입니다.</p>
+          <p>밟았는지, 묻었는지, 씻었는지에 따라 수가 달라집니다. 더러움을 피하지 않고 그대로 받아들이는 장면일수록 수가 세게 남아요.</p>
+          <p class="variants">같이 보기 — 변기 6 · 화장실 6</p>
+        </article>
+
+        <article class="dict-card">
+          <div class="dict-head">
+            <span class="dict-name">용·호랑이 꿈</span>
+            <span class="balls"><span class="ball-label">용</span><span class="ball">7</span><span class="ball">24</span><span class="ball-label">호랑이</span><span class="ball alt">3</span><span class="ball alt">13</span></span>
+          </div>
+          <p class="tagline">큰 권위와 기회 — 태몽으로도 자주 언급되는 상징</p>
+          <p>용은 <strong>7·24</strong>, 호랑이는 <strong>3·13</strong>이 기본수입니다. 둘 다 ‘다가옴·접촉·품에 안김’에서 수가 강해지는 동물 상징군이라, 하늘로 오르는 용이나 산에서 마주친 호랑이처럼 <strong>방향과 거리</strong>가 해석의 중심이 됩니다.</p>
+          <p>용과 호랑이가 함께 나오면 두 계열 수가 모두 후보에 올라 조합이 넓어집니다. 호랑이 새끼는 3·13으로 어미와 같은 수를 씁니다.</p>
+          <p class="variants">같이 보기 — 구렁이 9·28 · 여우 25 · 독수리 9</p>
+        </article>
+
+        <article class="dict-card">
+          <div class="dict-head">
+            <span class="dict-name">돈·금 꿈</span>
+            <span class="balls"><span class="ball">10</span><span class="ball">20</span><span class="ball">30</span><span class="ball">40</span><span class="ball alt">4</span><span class="ball alt">9</span></span>
+          </div>
+          <p class="tagline">현금·지폐·금붙이로 갈리는 재물의 결</p>
+          <p>‘돈(한국)’은 <strong>0으로 끝나는 수(10·20·30·40)와 4·9</strong>를 씁니다. 금은 <strong>11·12</strong>, 금괴는 9·11·24, 현금은 44, 지폐는 9·19·29·39, 돈다발은 11, 돈뭉치는 32입니다.</p>
+          <p>같은 재물이라도 <strong>종이돈인지 금붙이인지</strong>에 따라 수가 완전히 달라집니다. 주웠는지, 잃었는지, 남에게 줬는지도 함께 적으면 좋아요.</p>
+          <p class="variants">같이 보기 — 금돼지 8 · 황금똥 37 · 돈벼락 40</p>
+        </article>
+
+        <article class="dict-card">
+          <div class="dict-head">
+            <span class="dict-name">이빨 빠지는 꿈</span>
+            <span class="balls"><span class="ball">2</span><span class="ball">39</span></span>
+          </div>
+          <p class="tagline">가족·건강을 걱정하는 꿈으로 자주 이야기되는 상징</p>
+          <p>이빨은 <strong>2·39</strong>, 이빨이 빠지는 장면은 <strong>2</strong>로 잡혀 있습니다. 이빨조각은 31이에요. 이 빠진 이를 손에 쥐었는지, 피가 났는지, 아팠는지에 따라 수가 더해집니다.</p>
+          <p>이 꿈은 흔히 ‘가까운 사람의 안부’를 묻는 꿈으로 읽힙니다. 겁이 났던 꿈이라면 문장에 함께 나온 다른 상징(피·거울·병원)까지 후보에 올려 조합이 만들어져요.</p>
+          <p class="variants">같이 보기 — 입(1로 끝나는 수) 1·11·21·31·41 · 치과 6 · 피 4</p>
+        </article>
+
+        <article class="dict-card">
+          <div class="dict-head">
+            <span class="dict-name">거미·벌레 꿈</span>
+            <span class="balls"><span class="ball-label">거미</span><span class="ball">8</span><span class="ball">10</span><span class="ball-label">벌레</span><span class="ball alt">8</span><span class="ball alt">12</span></span>
+          </div>
+          <p class="tagline">촘촘한 관계망, 작은 일의 반복</p>
+          <p>거미는 <strong>8·10</strong>, 벌레는 <strong>8·12</strong>가 기본수입니다. 거미줄은 20, 거미다리는 22, 구더기는 1·7, 지렁이는 1·11·21·29·31·41로 갈립니다.</p>
+          <p>벌레가 몸에 붙었는지, 거미줄에 걸렸는지가 해석의 중심입니다. 작은 것이 많이 나오는 꿈은 수가 여러 개로 흩어지므로, 대표 상징 하나를 골라 적으면 조합이 더 또렷해집니다.</p>
+          <p class="variants">같이 보기 — 파리 7·8 · 모기 10 · 개미 8·12</p>
+        </article>
+
+      </div>
+
+      <h3>그 밖에 자주 찾는 상징</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">꿈에 나온 것</th><th scope="col">앱이 쓰는 수</th><th scope="col">읽는 결</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>강아지</td><td><span class="nums">3 · 8 · 28 · 33</span><span class="why">다가와 품에 안기면 강해짐</span></td><td>가까운 사람, 충실함</td></tr>
+            <tr><td>해</td><td><span class="nums">10 · 20 · 30 · 40</span><span class="why">둥근 테두리는 0 계열</span></td><td>드러남, 시작</td></tr>
+            <tr><td>달</td><td><span class="nums">5 · 10 · 20 · 24 · 30 · 40</span><span class="why">기울면 수가 갈림</span></td><td>기다림, 마음</td></tr>
+            <tr><td>무덤</td><td><span class="nums">3 · 17</span><span class="why">산소·묘지 모두 같은 계열</span></td><td>마무리, 조상</td></tr>
+            <tr><td>부추</td><td><span class="nums">5</span><span class="why">실전 사례에서 5·6이 함께 잡힘</span></td><td>작은 이득, 회복</td></tr>
+            <tr><td>국자</td><td><span class="nums">6</span><span class="why">사물 기본수</span></td><td>받아 내는 일</td></tr>
+            <tr><td>교실·학교</td><td><span class="nums">7 · 36</span><span class="why">공간과 사물이 함께 잡힘</span></td><td>배움, 시험</td></tr>
+            <tr><td>복권·로또</td><td><span class="nums">6 · 7 · 14 · 45</span><span class="why">로또는 6 · 7 · 45</span></td><td>기대, 요행</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">표에 없는 단어도 앱은 11,705개 색인에서 찾습니다. 색인에 없는 말은 “등록되지 않은 단어”로 두고 모양·소리 원리로만 읽으며, <strong>없는 숫자를 지어내지 않습니다.</strong></p>
+    </section>
+
+    <section id="faq">
+      <h2><span class="no">5</span>자주 묻는 질문</h2>
+
+      <details class="faq">
+        <summary>몽픽은 무료인가요?</summary>
+        <div class="a"><p>네. 회원가입·로그인·결제가 없습니다. 웹 주소로 바로 열리고, 홈 화면에 앱처럼 설치해서 쓸 수도 있어요. 앱 안에 광고를 붙여 두지도 않았습니다.</p></div>
+      </details>
+
+      <details class="faq">
+        <summary>뽑은 번호가 당첨을 보장하나요?</summary>
+        <div class="a"><p>아니요. 몽픽은 꿈 상징과 날짜 기운을 계산해 조합을 만드는 <strong>재미용 참고 도구</strong>입니다. 로또는 매 회차 독립 추첨이므로 어떤 도구도 당첨을 보장할 수 없습니다. 구매는 본인 판단으로 하시고, 만 19세 미만은 구매할 수 없어요.</p></div>
+      </details>
+
+      <details class="faq">
+        <summary>꿈 내용이나 생일이 서버로 올라가나요?</summary>
+        <div class="a"><p>올라가지 않습니다. 꿈 내용·생일·뽑은 조합은 이 기기 브라우저 저장소에만 저장되고, 번호 계산도 기기 안에서 끝납니다. 몽픽은 방문자 수와 탭 이용 통계만 Google Analytics 4로 집계하며, 그 통계에 꿈 내용·생일·이름은 담기지 않습니다.</p></div>
+      </details>
+
+      <details class="faq">
+        <summary>조합은 몇 개 나오고, 어떤 조건으로 만들어지나요?</summary>
+        <div class="a"><p>한 번 뽑으면 6개 번호로 된 조합 <strong>5개</strong>가 나옵니다. 6수는 서로 겹치지 않고, 간격 다양성(AC) 7 이상, 홀짝 2:4~4:2, 번호대 3구간 이상, 합 100~175 조건을 지킵니다. 생일만으로 뽑는 균형 모드는 홀짝 3:3과 AC 8 이상으로 더 빡빡하게 잡습니다.</p></div>
+      </details>
+
+      <details class="faq">
+        <summary>같은 꿈을 다시 넣으면 번호가 바뀌나요?</summary>
+        <div class="a"><p>바뀌지 않습니다. 같은 입력과 같은 회차에서는 같은 5조합이 나오도록 고정되어 있어요. 다른 조합을 보고 싶으면 꿈 표현을 조금 바꾸거나, 빼기·고정 번호·생일 같은 조건을 바꿔 주세요. 뽑은 조합은 번호함에 자동으로 쌓이니 실수로 덮어써도 이전 조합이 남습니다.</p></div>
+      </details>
+
+      <details class="faq">
+        <summary>당첨 결과는 언제 반영되나요?</summary>
+        <div class="a"><p>토요일 20:35 추첨 뒤 동행복권에 결과가 공개되면, 몽픽이 그 결과를 받아 파일로 갱신하고 홈페이지가 다시 만들어집니다. 보통 추첨 후 10~30분 사이에 지난 회차 채점과 번호함 채점이 함께 갱신돼요. 바로 확인하고 싶으면 안내 탭의 <strong>직접 채점</strong> 칸에 당첨번호 6개와 보너스 1개를 넣으면 됩니다.</p></div>
+      </details>
+
+      <details class="faq">
+        <summary>실물 로또 용지 QR은 어떻게 읽나요?</summary>
+        <div class="a"><p>앱 상단의 <strong>QR</strong> 버튼 → ‘카메라로 스캔’ → 용지 오른쪽 위 QR을 사각형 안에 맞춥니다. 카메라가 안 되면 ‘사진에서 읽기’로 용지 사진을 올리거나, QR 링크를 붙여넣어도 됩니다. 인앱 브라우저(카톡·인스타 등)에서는 카메라 권한이 막힐 수 있으니 사파리·크롬으로 열어 주세요.</p></div>
+      </details>
+
+      <details class="faq">
+        <summary>번호함은 어디에 저장되고, 기기를 바꾸면 어떻게 되나요?</summary>
+        <div class="a"><p>이 기기 브라우저에만 저장됩니다(회차·추첨일·꿈 요약·조합). 자동으로 다른 기기와 동기화되지 않고, 브라우저 데이터를 지우거나 홈 화면 앱을 삭제하면 함께 지워집니다. 꼭 남기고 싶은 조합은 결과 카드의 이미지 저장이나 공유 기능으로 따로 보관해 주세요.</p></div>
+      </details>
+
+      <details class="faq">
+        <summary>꿈 해몽 숫자는 무엇을 근거로 정해졌나요?</summary>
+        <div class="a"><p>몽픽이 직접 구조화한 꿈 상징 11,705개 색인과 실전 꿈 사례 155건을 바탕으로, 단어마다 상징 기본수와 모양·소리·의미 원리를 붙여 정리했습니다. 이 페이지 <a href="#dictionary">꿈 해몽 숫자 사전</a>의 숫자도 앱이 쓰는 데이터와 같은 값입니다.</p></div>
+      </details>
+
+      <details class="faq">
+        <summary>만 19세 미만도 쓸 수 있나요?</summary>
+        <div class="a"><p>앱을 열어 번호를 뽑아 보는 것은 가능하지만, 복권 및 복권기금법에 따라 <strong>만 19세 미만은 복권을 구매할 수 없습니다.</strong> 미성년자에게는 번호 뽑기를 놀이로만 권해 주세요.</p></div>
+      </details>
+    </section>
+
+    <section id="notice">
+      <h2><span class="no">6</span>재미·참고용 안내</h2>
+      <div class="callout">
+        <p>몽픽이 만드는 번호는 꿈 상징과 날짜 기운을 계산한 <b>재미로 보는 참고용</b> 조합입니다. 어떤 조합도 <b>당첨을 보장하지 않습니다.</b></p>
+        <p>번호 선택과 구매는 전적으로 <b>본인의 판단</b>이며, 그 결과에 대해 몽픽은 책임지지 않습니다. 당첨금과 지급 여부는 복권을 발행하는 기관의 공식 발표를 기준으로 확인해 주세요.</p>
+        <p>복권 및 복권기금법에 따라 <b>만 19세 미만은 복권을 구매할 수 없습니다.</b></p>
+      </div>
+      <p class="note" style="margin-top:12px">이 페이지의 숫자와 분류는 몽픽이 구조화한 꿈 상징 데이터와 7×7 수리 배열을 기준으로 정리했습니다. 꿈 해몽은 사람마다 다르게 읽을 수 있고, 정답이 있는 해석이 아닙니다.</p>
+
+      <div class="contact">
+        <div class="label">문의</div>
+        <a class="mail" href="mailto:mr.gichan0911@gmail.com">mr.gichan0911@gmail.com</a>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="foot">
+    <span>정리 2026-11-21 · 몽픽(MongPick)</span>
+    <div class="links">
+      <a class="back" href="./privacy.html">개인정보처리방침</a>
+      <a class="back" href="./index.html">앱으로 돌아가기</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

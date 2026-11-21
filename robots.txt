@@ -1,0 +1,6 @@
+# 몽픽(MongPick) — 꿈으로 번호 뽑기
+# 검색엔진에는 모든 공개 페이지를 허용합니다. 개인 데이터는 서버에 없습니다.
+User-agent: *
+Allow: /
+
+Sitemap: https://mongpick-kr.github.io/sitemap.xml
