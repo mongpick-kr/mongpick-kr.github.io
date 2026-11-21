@@ -11,8 +11,6 @@ on:
     - cron: '45 11 * * 6'
     - cron: '55 11 * * 6'
     - cron: '10 12 * * 6'
-    # ↓ 예약 트리거 동작 점검용 임시 줄 — 확인 후 바로 뺀다
-    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 permissions:
